@@ -7402,7 +7402,7 @@ MonoBehaviour:
   stateText: {fileID: 6747378327779109306}
   RecordButtonText: {fileID: 0}
   ConnectButtonText: {fileID: 0}
-  Bot1_Forearm: {fileID: 0}
+  Bot1_Forearm: {fileID: 4407092388296700240}
   Bot1_Upperarm: {fileID: 0}
   Bot2_Forearm: {fileID: 0}
   Bot2_Upperarm: {fileID: 0}

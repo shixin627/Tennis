@@ -76,7 +76,7 @@ public class NotifyResolver
     {
         NotifyKey notifyKey = (NotifyKey)key;
         string debugMessage;
-        
+
         switch (notifyKey)
         {
             case NotifyKey.KeyQuaternionData:
@@ -86,14 +86,31 @@ public class NotifyResolver
                     float qx = BitConverter.ToSingle(new byte[] { (byte)pValue[4], (byte)pValue[5], (byte)pValue[6], (byte)pValue[7], }, 0);
                     float qy = BitConverter.ToSingle(new byte[] { (byte)pValue[8], (byte)pValue[9], (byte)pValue[10], (byte)pValue[11], }, 0);
                     float qz = BitConverter.ToSingle(new byte[] { (byte)pValue[12], (byte)pValue[13], (byte)pValue[14], (byte)pValue[15], }, 0);
-                    debugMessage = $"Quaternion: {qw:F2}, {qx:F2}, {qy:F2}, {qz:F2}";
+                    Quaternion quaternion = new Quaternion(qx, qy, qz, qw);
+                    Debug.Log("Quaternion: " + quaternion);
+                    GameObject playerBasePrefab = GameObject.Find("Player base prefab");
+                    if (playerBasePrefab == null)
+                    {
+                        Debug.LogError("Player base prefab not found");
+                        return;
+                    }
 
-                    UnityEngine.Quaternion quaternion = new UnityEngine.Quaternion(qx, qy, qz, qw);
-                    //debugMessage = $"Quaternion: {quaternion}";
-                    //GameObject.Find("MainApp").GetComponent<ArmControl>().SetStateText(debugMessage);
-                    GameObject.Find("MainApp").GetComponent<ArmControl>().Set_Bot1_Forearm(quaternion);
+                    ArmControl armControl = playerBasePrefab.GetComponent<ArmControl>();
+                    if (armControl == null)
+                    {
+                        Debug.LogError("ArmControl component not found on Player base prefab");
+                        return;
+                    }
+
+                    if (quaternion == null)
+                    {
+                        Debug.LogError("Quaternion parameter is null");
+                        return;
+                    }
+
+                    armControl.Set_Bot1_Forearm(quaternion);
                 }
-                
+
                 break;
             // ... other cases
             default:

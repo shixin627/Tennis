@@ -95,10 +95,10 @@ public class ArmControl : MonoBehaviour
         Message = $"Local Rotation:(X={localRotation.x:F2}, Y={localRotation.y:F2}, Z={localRotation.z:F2})";
         SetStateText(Message);
 
-        Vector3 gravityVector = CalculateGravity(Quat_UnityFrame_Forearm);
-        bool ready = IsReadyForCalibration(gravityVector);
         if (!calibrated)
         {
+            Vector3 gravityVector = CalculateGravity(Quat_UnityFrame_Forearm);
+            bool ready = IsReadyForCalibration(gravityVector);
             if (!ready)
             {
                 Message = "Uncalibrated...gravity=\n" + gravityVector.ToString();
