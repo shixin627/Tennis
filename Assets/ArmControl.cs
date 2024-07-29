@@ -316,15 +316,15 @@ public class ArmControl : MonoBehaviour
         Inverse_Quat_Forearm = Quaternion.identity;
         Inverse_Quat_Upperarm = Quaternion.identity;
 
-        genderDropdown.onValueChanged.AddListener(delegate
-        {
-            selectGender(genderDropdown);
-        });
+        // genderDropdown.onValueChanged.AddListener(delegate
+        // {
+        //     selectGender(genderDropdown);
+        // });
 
-        heightDropdown.onValueChanged.AddListener(delegate
-        {
-            selectHeight(heightDropdown);
-        });
+        // heightDropdown.onValueChanged.AddListener(delegate
+        // {
+        //     selectHeight(heightDropdown);
+        // });
     }
 
     private double calculate_total_linear_acceleration(double x, double y, double z)
@@ -347,16 +347,16 @@ public class ArmControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_connected)
-        {
-            ConnectButton.interactable = false;
-            ConnectButtonText.text = "connected";
-        }
-        else
-        {
-            ConnectButton.interactable = true;
-            ConnectButtonText.text = "Connect";
-        }
+        // if (_connected)
+        // {
+        //     ConnectButton.interactable = false;
+        //     ConnectButtonText.text = "connected";
+        // }
+        // else
+        // {
+        //     ConnectButton.interactable = true;
+        //     ConnectButtonText.text = "Connect";
+        // }
         if (_timeout > 0f)
         {
             _timeout -= Time.deltaTime;
@@ -367,11 +367,12 @@ public class ArmControl : MonoBehaviour
                 switch (_state)
                 {
                     case States.None:
+                        SetStateText("None");
                         break;
 
                     case States.Scan:
-                        //SetStateText("Scanning for MCU devices...");
-
+                        Message = "Scanning Watch...";
+                        SetStateText(Message);
                         BluetoothLEHardwareInterface.ScanForPeripheralsWithServices(null, (address, name) =>
                         {
                             if (name.Contains(DeviceName))
