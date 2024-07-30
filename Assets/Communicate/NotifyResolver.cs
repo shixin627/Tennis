@@ -87,11 +87,17 @@ public class NotifyResolver
                     float qy = BitConverter.ToSingle(new byte[] { (byte)pValue[8], (byte)pValue[9], (byte)pValue[10], (byte)pValue[11], }, 0);
                     float qz = BitConverter.ToSingle(new byte[] { (byte)pValue[12], (byte)pValue[13], (byte)pValue[14], (byte)pValue[15], }, 0);
                     Quaternion quaternion = new Quaternion(qx, qy, qz, qw);
-                    Debug.Log("Quaternion: " + quaternion);
-                    GameObject playerBasePrefab = GameObject.Find("Player base prefab");
+                    // Debug.Log("Quaternion: " + quaternion);
+                    if (quaternion == null)
+                    {
+                        Debug.LogError("Quaternion parameter is null");
+                        return;
+                    }
+                    
+                    GameObject playerBasePrefab = GameObject.Find("Player base prefab(Clone)");
                     if (playerBasePrefab == null)
                     {
-                        Debug.LogError("Player base prefab not found");
+                        Debug.LogError("Player base prefab(Clone) not found");
                         return;
                     }
 
@@ -102,13 +108,7 @@ public class NotifyResolver
                         return;
                     }
 
-                    if (quaternion == null)
-                    {
-                        Debug.LogError("Quaternion parameter is null");
-                        return;
-                    }
-
-                    armControl.Set_Bot1_Forearm(quaternion);
+                    armControl.Set_Player_Forearm(quaternion);
                 }
 
                 break;

@@ -74,9 +74,9 @@ public class ArmControl : MonoBehaviour
     }
 
     static Quaternion last_forearm_quat = new Quaternion(0, 0, 0, 1);
-    public void Set_Bot1_Forearm(Quaternion q)
+    public void Set_Player_Forearm(Quaternion q)
     {
-        Quat_UnityFrame_Forearm = new Quaternion(q.y, q.z, q.x, q.w);
+        Quat_UnityFrame_Forearm = new Quaternion(q.x, q.z, q.y, q.w);
         forearm_rotation = Quat_UnityFrame_Forearm.Add(Quat_Diff) * Inverse_Quat_Forearm;
         Bot1_Forearm.rotation = forearm_rotation;
         // calculate the angle difference on axis y and z of forearm
@@ -236,7 +236,7 @@ public class ArmControl : MonoBehaviour
 
     private Quaternion Inverse_Predict_Quat_Upperarm = new();
 
-    private Quaternion Quat_North = Quaternion.Euler(0, 90, 180);
+    private Quaternion Quat_North = Quaternion.Euler(0, 180, 180);
     private Quaternion Quat_Diff;
 
     private Quaternion upperarm_rotation1 = Quaternion.identity;
