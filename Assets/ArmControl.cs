@@ -107,7 +107,7 @@ public class ArmControl : MonoBehaviour
             {
                 ResetRotation();
                 calibrated = true;
-                Message = "It's Ready";
+                Message = "It's Ready!!!";
             }
             SetStateText(Message);
         }
