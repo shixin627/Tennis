@@ -120,6 +120,43 @@ public class Player : MonoBehaviour {
 		}
     }
 
+	int totalPower = 0;
+
+	void ShootWithWatch()
+	{
+		GameObject playerBasePrefab = GameObject.Find("Player base prefab(Clone)");
+        if (playerBasePrefab == null)
+        {
+            Debug.LogError("Player base prefab(Clone) not found");
+            return;
+        }
+
+        ArmControl arm = playerBasePrefab.GetComponent<ArmControl>();
+        if (arm == null)
+        {
+            Debug.LogError("Player component not found on Player base prefab");
+            return;
+        }
+
+		if (arm.isMovingYaw != 0)
+		{
+			totalPower += arm.isMovingYaw;
+			arm.isMovingYaw = 0;
+		}
+		else
+		{
+			if (totalPower > 0)
+			{
+				totalPower -= 1;
+			}
+			else if (totalPower < 0)
+			{
+				totalPower += 1;
+			}
+		}
+		arm.TennisLog("Shooting ball with power: " + totalPower);
+	}
+
     void Update(){
 		//check if the player should move on the x axis
 		Move();
@@ -165,6 +202,8 @@ public class Player : MonoBehaviour {
 		//check if we can shoot
 		if(rangeCircle.GetBool("Show"))
 			Shoot();
+
+		ShootWithWatch();
     }
 	
 	//look at opponent

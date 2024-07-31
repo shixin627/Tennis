@@ -74,6 +74,10 @@ public class ArmControl : MonoBehaviour
     }
 
     static Quaternion last_forearm_quat = new Quaternion(0, 0, 0, 1);
+
+    public int isMovingYaw;
+    public int isMovingPitch;
+
     public void Set_Player_Forearm(Quaternion q)
     {
         Quat_UnityFrame_Forearm = new Quaternion(q.x, q.z, q.y, q.w);
@@ -87,13 +91,13 @@ public class ArmControl : MonoBehaviour
         float delta_pitch = deltaEuler.z;
         delta_yaw = delta_yaw > 180 ? delta_yaw - 360 : delta_yaw;
         delta_pitch = delta_pitch > 180 ? delta_pitch - 360 : delta_pitch;
-        AccumulateAngleYaw(delta_yaw);
-        AccumulateAnglePitch(delta_pitch);
+        isMovingYaw = AccumulateAngleYaw(delta_yaw);
+        isMovingPitch = AccumulateAnglePitch(delta_pitch);
         last_forearm_quat = forearm_rotation;
 
         Quaternion localRotation = Bot1_Forearm.localRotation;
-        Message = $"Local Rotation:(X={localRotation.x:F2}, Y={localRotation.y:F2}, Z={localRotation.z:F2})";
-        SetStateText(Message);
+        // Message = $"Local Rotation:(X={localRotation.x:F2}, Y={localRotation.y:F2}, Z={localRotation.z:F2})";
+        // SetStateText(Message);
 
         if (!calibrated)
         {
@@ -165,32 +169,44 @@ public class ArmControl : MonoBehaviour
         }
     }
 
-    private void AccumulateAngleYaw(float delta_yaw)
+    private int AccumulateAngleYaw(float delta_yaw)
     {
         accumulated_angle_yaw += delta_yaw;
         if (accumulated_angle_yaw >= 8.0f)
         {
             accumulated_angle_yaw = 0.0f;
-            HandleCoordinateZ(1);
+            // HandleCoordinateZ(1);
+            return 1;
         }
         else if (accumulated_angle_yaw <= -8.0f)
         {
             accumulated_angle_yaw = 0.0f;
-            HandleCoordinateZ(-1);
+            // HandleCoordinateZ(-1);
+            return -1;
+        }
+        else
+        {
+            return 0;
         }
     }
-    private void AccumulateAnglePitch(float delta_pitch)
+    private int AccumulateAnglePitch(float delta_pitch)
     {
         accumulated_angle_pitch += delta_pitch;
         if (accumulated_angle_pitch >= 8.0f)
         {
             accumulated_angle_pitch = 0.0f;
-            HandleCoordinateY(1);
+            // HandleCoordinateY(1);
+            return 1;
         }
         else if (accumulated_angle_pitch <= -8.0f)
         {
             accumulated_angle_pitch = 0.0f;
-            HandleCoordinateY(-1);
+            // HandleCoordinateY(-1);
+            return -1;
+        }
+        else
+        {
+            return 0;
         }
     }
     static int gesture_label = 0;
@@ -292,6 +308,14 @@ public class ArmControl : MonoBehaviour
 
     public void SetStateText(string text)
     {
+        if (stateText == null) return;
+        if (text == "") return;
+        stateText.text = text;
+    }
+
+    public void TennisLog(string text)
+    {
+        if (!calibrated) return;
         if (stateText == null) return;
         if (text == "") return;
         stateText.text = text;
